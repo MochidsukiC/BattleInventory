@@ -1,0 +1,12 @@
+HeadSlot: 21
+ChestSlot: 22
+LeggingsSlot: 35
+BootsSlot: 23
+
+AllowSlot:
+  - 9
+  - 10
+  - 18
+  - 19
+  - 27
+  - 28

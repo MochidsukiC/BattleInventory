@@ -1,0 +1,4 @@
+name: BattleInventory
+version: '${project.version}'
+main: jp.houlab.mochidsuki.battleinventory.Main
+api-version: '1.20'
