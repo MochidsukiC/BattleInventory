@@ -16,6 +16,10 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
         config = getConfig();
 
+        getServer().getPluginManager().registerEvents(new Listener(),this);
+
+        new InventoryController().runTaskTimer(this, 1L, 1L);
+
     }
 
     @Override

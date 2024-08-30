@@ -22,6 +22,9 @@ public class InventoryController extends BukkitRunnable {
             ItemStack leggings = player.getInventory().getItem(config.getInt("LeggingsSlot"));
             ItemStack boots = player.getInventory().getItem(config.getInt("BootsSlot"));
 
+            if(player.getScoreboardTags().contains("JetPack")){
+                chest = new ItemStack(Material.ELYTRA);
+            }
 
             if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 player.getInventory().setItem(EquipmentSlot.HEAD, head);
