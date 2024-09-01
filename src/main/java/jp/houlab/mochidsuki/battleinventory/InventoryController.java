@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
 import java.util.Objects;
 
 import static jp.houlab.mochidsuki.battleinventory.Main.config;
@@ -45,6 +46,16 @@ public class InventoryController extends BukkitRunnable {
                 player.getInventory().setItem(EquipmentSlot.FEET, new ItemStack(Material.AIR));
                 player.getInventory().setItem(EquipmentSlot.LEGS, new ItemStack(Material.AIR));
                 //player.updateInventory();
+            }
+            List<Integer> allowList = config.getIntegerList("AllowSlot");
+            allowList.add(config.getInt("HeadSlot"));
+            allowList.add(config.getInt("ChestSlot"));
+            allowList.add(config.getInt("LeggingsSlot"));
+            allowList.add(config.getInt("BootsSlot"));
+            for(int i = 0; i <= 35; i++) {
+                if(!allowList.contains(i)) {
+                    player.getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
+                }
             }
         }
     }
