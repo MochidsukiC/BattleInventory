@@ -13,21 +13,30 @@ import java.util.Objects;
 import static jp.houlab.mochidsuki.battleinventory.Main.config;
 import static jp.houlab.mochidsuki.battleinventory.Main.plugin;
 
-
+/**
+ * インベントリの制限、同期を司るクラス
+ * @author Mochidsuki
+ */
 public class InventoryController extends BukkitRunnable {
+    /**
+     * 実行
+     */
     @Override
     public void run() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
+            //防具のアイテムをゲット
             ItemStack head = player.getInventory().getItem(config.getInt("HeadSlot"));
             ItemStack chest = player.getInventory().getItem(config.getInt("ChestSlot"));
             ItemStack leggings = player.getInventory().getItem(config.getInt("LeggingsSlot"));
             ItemStack boots = player.getInventory().getItem(config.getInt("BootsSlot"));
 
+            //ジェットパック中の処理
             if(player.getScoreboardTags().contains("JetPack")){
                 chest = new ItemStack(Material.ELYTRA);
             }
 
-            if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+
+            if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {//透明化の防具自動削除
                 player.getInventory().setItem(EquipmentSlot.HEAD, head);
 
                 if (!Objects.equals(player.getInventory().getItem(EquipmentSlot.CHEST), new ItemStack(Material.ELYTRA))) {
@@ -36,7 +45,7 @@ public class InventoryController extends BukkitRunnable {
                 player.getInventory().setItem(EquipmentSlot.FEET, boots);
                 player.getInventory().setItem(EquipmentSlot.LEGS, leggings);
                 //player.updateInventory();
-            } else {
+            } else {//防具同期
                 player.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
                 if(chest == null || chest.getType() != Material.ELYTRA) {
                     player.getInventory().setItem(EquipmentSlot.CHEST, new ItemStack(Material.AIR));
@@ -47,6 +56,8 @@ public class InventoryController extends BukkitRunnable {
                 player.getInventory().setItem(EquipmentSlot.LEGS, new ItemStack(Material.AIR));
                 //player.updateInventory();
             }
+
+            //不許可スロットの拒否
             List<Integer> allowList = config.getIntegerList("AllowSlot");
             allowList.add(config.getInt("HeadSlot"));
             allowList.add(config.getInt("ChestSlot"));
