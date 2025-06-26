@@ -26,6 +26,7 @@ public final class Main extends JavaPlugin {
 
         new InventoryController().runTaskTimer(this, 1L, 1L);
 
+        new PlayerWeightSystem().runTaskTimer(this, 1L, 1L);
     }
 
     /**
