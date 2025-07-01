@@ -29,20 +29,6 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event) {
 
-        // 毎回すべての情報をコンソールに出力して確認する
-        String hand = event.getHand().toString();
-        String action = event.getAction().toString();
-        String block = (event.getClickedBlock() == null) ? "null" : event.getClickedBlock().getType().toString();
-        String item = (event.getItem() == null) ? "null" : event.getItem().getType().toString();
-
-        // ログを見やすくするためにSystem.out.printlnを使用
-        System.out.println("--- PlayerInteractEvent ---");
-        System.out.println("Hand: " + hand);
-        System.out.println("Action: " + action);
-        System.out.println("Clicked Block: " + block);
-        System.out.println("Item in Hand: " + item);
-        System.out.println("---------------------------");
-
         if (event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.getItem() != null && event.getItem().getType() != Material.AIR && event.getPlayer().getCooldown(event.getItem().getType()) == 0) {
             switch (Objects.requireNonNull(event.getMaterial())) {
                 case LEATHER_HELMET:
@@ -136,11 +122,13 @@ public class Listener implements org.bukkit.event.Listener {
         if(!(allowList.contains(slot)||(event.getClickedInventory() != null && event.getClickedInventory().getType() != InventoryType.PLAYER))) {//不許可リストの拒否
             event.setCancelled(true);
             event.setResult(org.bukkit.event.Event.Result.DENY);
-        }else//アーマースロットの該当アイテム以外の拒否
+        }/*
+        else//アーマースロットの該当アイテム以外の拒否
             if((cursor.orElse(Material.LEATHER_HELMET) == Material.LEATHER_HELMET || cursor.orElse(Material.LEATHER_HELMET) == Material.CHAINMAIL_HELMET || cursor.orElse(Material.LEATHER_HELMET) == Material.GOLDEN_HELMET || cursor.orElse(Material.LEATHER_HELMET) == Material.IRON_HELMET || cursor.orElse(Material.LEATHER_HELMET) == Material.DIAMOND_HELMET || cursor.orElse(Material.LEATHER_HELMET) == Material.NETHERITE_HELMET || cursor.orElse(Material.LEATHER_CHESTPLATE) == Material.LEATHER_CHESTPLATE || cursor.orElse(Material.LEATHER_HELMET) == Material.CHAINMAIL_CHESTPLATE || cursor.orElse(Material.LEATHER_HELMET) == Material.IRON_CHESTPLATE || cursor.orElse(Material.LEATHER_HELMET) == Material.GOLDEN_CHESTPLATE || cursor.orElse(Material.LEATHER_HELMET) == Material.DIAMOND_CHESTPLATE || cursor.orElse(Material.LEATHER_HELMET) == Material.NETHERITE_CHESTPLATE || cursor.orElse(Material.LEATHER_BOOTS) == Material.LEATHER_BOOTS || cursor.orElse(Material.LEATHER_BOOTS) == Material.CHAINMAIL_BOOTS || cursor.orElse(Material.LEATHER_HELMET) == Material.IRON_BOOTS || cursor.orElse(Material.LEATHER_HELMET) == Material.GOLDEN_BOOTS || cursor.orElse(Material.LEATHER_BOOTS) == Material.DIAMOND_BOOTS || cursor.orElse(Material.LEATHER_HELMET) == Material.NETHERITE_BOOTS )&& event.getClickedInventory().getType() == InventoryType.PLAYER ){
             event.setCancelled(true);
             event.setResult(org.bukkit.event.Event.Result.DENY);
         }
+        */
 
     }
 
