@@ -1,6 +1,7 @@
 package jp.houlab.mochidsuki.battleinventory;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -35,27 +36,42 @@ public class InventoryController extends BukkitRunnable {
                 chest = new ItemStack(Material.ELYTRA);
             }
 
-
             if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {//透明化の防具自動削除
                 player.getInventory().setItem(EquipmentSlot.HEAD, head);
 
-                if (!Objects.equals(player.getInventory().getItem(EquipmentSlot.CHEST), new ItemStack(Material.ELYTRA))) {
-                    player.getInventory().setItem(EquipmentSlot.CHEST, chest);
+                if (chest != null && chest.getType().equals(Material.LEATHER_CHESTPLATE)&& chest.getType().equals(Material.CHAINMAIL_CHESTPLATE)&& chest.getType().equals(Material.IRON_CHESTPLATE)&& chest.getType().equals(Material.GOLDEN_CHESTPLATE)&& chest.getType().equals(Material.DIAMOND_CHESTPLATE)&& chest.getType().equals(Material.NETHERITE_CHESTPLATE)) {
+                    chest = chest.clone();
+                    if (player.getLevel() >= 10 && chest.getEnchantmentLevel(Enchantment.PROTECTION_PROJECTILE) < 2) {
+                        chest.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 2);
+                    }
+                    if (player.getLevel() >= 30 && chest.getEnchantmentLevel(Enchantment.PROTECTION_FIRE) < 2) {
+                        chest.addEnchantment(Enchantment.PROTECTION_FIRE, 2);
+                    }
+                    if (player.getLevel() >= 70 && chest.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) < 1) {
+                        chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+                    }
+                    if (player.getLevel() >= 140 && chest.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) < 2) {
+                        chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+                    }
+
                 }
+                player.getInventory().setItem(EquipmentSlot.CHEST, chest);
                 player.getInventory().setItem(EquipmentSlot.FEET, boots);
                 player.getInventory().setItem(EquipmentSlot.LEGS, leggings);
                 //player.updateInventory();
             } else {//防具同期
                 player.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
-                if(chest == null || chest.getType() != Material.ELYTRA) {
+                if (chest == null || chest.getType() != Material.ELYTRA) {
                     player.getInventory().setItem(EquipmentSlot.CHEST, new ItemStack(Material.AIR));
-                }else {
+                } else {
+
                     player.getInventory().setItem(EquipmentSlot.CHEST, chest);
                 }
                 player.getInventory().setItem(EquipmentSlot.FEET, new ItemStack(Material.AIR));
                 player.getInventory().setItem(EquipmentSlot.LEGS, new ItemStack(Material.AIR));
                 //player.updateInventory();
             }
+
 
             //不許可スロットの拒否
             List<Integer> allowList = config.getIntegerList("AllowSlot");
