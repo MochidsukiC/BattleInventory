@@ -53,6 +53,9 @@ public class InventoryController extends BukkitRunnable {
                     if (player.getLevel() >= 140 && chest.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) < 2) {
                         chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
                     }
+                    if(player.getLevel() >= 210 && chest.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) < 3){
+                        chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
+                    }
 
                 }
                 player.getInventory().setItem(EquipmentSlot.CHEST, chest);
