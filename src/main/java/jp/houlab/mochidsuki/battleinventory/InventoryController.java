@@ -5,8 +5,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ArmorMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,9 +43,8 @@ public class InventoryController extends BukkitRunnable {
             }
 
             if (!player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {//透明化の防具自動削除
-                player.getInventory().setItem(EquipmentSlot.HEAD, head);
 
-                if (chest != null && chest.getType().equals(Material.LEATHER_CHESTPLATE)&& chest.getType().equals(Material.CHAINMAIL_CHESTPLATE)&& chest.getType().equals(Material.IRON_CHESTPLATE)&& chest.getType().equals(Material.GOLDEN_CHESTPLATE)&& chest.getType().equals(Material.DIAMOND_CHESTPLATE)&& chest.getType().equals(Material.NETHERITE_CHESTPLATE)) {
+                if (chest != null && (chest.getType().equals(Material.LEATHER_CHESTPLATE) || chest.getType().equals(Material.CHAINMAIL_CHESTPLATE) || chest.getType().equals(Material.IRON_CHESTPLATE) || chest.getType().equals(Material.GOLDEN_CHESTPLATE) || chest.getType().equals(Material.DIAMOND_CHESTPLATE) || chest.getType().equals(Material.NETHERITE_CHESTPLATE))) {
                     chest = chest.clone();
                     if (player.getLevel() >= 10 && chest.getEnchantmentLevel(Enchantment.PROTECTION_PROJECTILE) < 2) {
                         chest.addEnchantment(Enchantment.PROTECTION_PROJECTILE, 2);
@@ -57,7 +62,16 @@ public class InventoryController extends BukkitRunnable {
                         chest.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
                     }
 
+                    if(player.isOp() && head != null && (head.getType().equals(Material.LEATHER_HELMET) || head.getType().equals(Material.CHAINMAIL_HELMET) || head.getType().equals(Material.IRON_HELMET) || head.getType().equals(Material.GOLDEN_HELMET) || head.getType().equals(Material.DIAMOND_HELMET) || head.getType().equals(Material.NETHERITE_HELMET))){
+                        head = head.clone();
+                        ArmorMeta meta = (ArmorMeta) head.getItemMeta();
+                        ArmorTrim trim = new ArmorTrim(TrimMaterial.REDSTONE, TrimPattern.SILENCE);
+                        meta.setTrim(trim);
+                        head.setItemMeta(meta);
+                    }
                 }
+
+                player.getInventory().setItem(EquipmentSlot.HEAD, head);
                 player.getInventory().setItem(EquipmentSlot.CHEST, chest);
                 player.getInventory().setItem(EquipmentSlot.FEET, boots);
                 player.getInventory().setItem(EquipmentSlot.LEGS, leggings);
