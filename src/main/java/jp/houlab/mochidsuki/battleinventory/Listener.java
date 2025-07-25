@@ -91,6 +91,9 @@ public class Listener implements org.bukkit.event.Listener {
      */
     @EventHandler
     public void InventoryClick(InventoryClickEvent event) {
+        if(event.getClickedInventory().getType() != InventoryType.PLAYER){
+            return;
+        }
 
         plugin.reloadConfig();
         config = plugin.getConfig();
@@ -101,6 +104,7 @@ public class Listener implements org.bukkit.event.Listener {
                 slot = 0;
             }
         }
+
 
         List<Integer> allowList = config.getIntegerList("AllowSlot");//許可スロット
 
